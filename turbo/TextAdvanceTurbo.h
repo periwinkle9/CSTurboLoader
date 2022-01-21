@@ -8,6 +8,9 @@ class TextAdvanceTurbo : public TurboState
 {
 	enum class ButtonPressState { NoPress, Press, AlreadyPressed };
 	ButtonPressState buttonPress;
+	bool init;
+
+	void initActions();
 public:
 	TextAdvanceTurbo(int in = 0);
 	TurboState* procStateTransition(int input) override;
