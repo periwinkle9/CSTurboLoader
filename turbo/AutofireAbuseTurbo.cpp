@@ -59,21 +59,22 @@ auto AutofireAbuseTurbo::getMode() const -> TurboMode
 	if (!(input & KEY_TURBO) || (input & (KEY_ITEM | KEY_MAP | KEY_ESCAPE)))
 		return TurboMode::None;
 
-	// If an event started, we should switch to text mashing mode
-	// I think this should also cover inventory changes, since those have to be done via TSC events
-	if (gTSmode != 0)
+	// If an event started and we no longer have player control, we should switch to text mashing mode
+	if (gTSmode != 0 && !(g_GameFlags & 2))
 		return TurboMode::TextAdvance;
 
 	// If released X, switch to normal autofire mode
 	if (!(input & KEY_X))
 		return TurboMode::Standard;
 
-	// If the autofire gun was the Bubbler and it leveled down to L1, switch to normal autofire on the main gun
+	// Check that our weapons are still good
+	// TODO: This wouldn't happen in vanilla, but if any weapons get removed by an event that doesn't lock player controls,
+	// then this code will break
 	int autofireGun = (swapDir == SwapDirection::SwapLeft ? prevWeaponIdx() : nextWeaponIdx());
-	if (gArmsData[autofireGun].code == 7 && gArmsData[autofireGun].level == 1)
+	if (gArmsData[autofireGun].code == 7 && gArmsData[autofireGun].level == 1) // Check whether Bubbler leveled down
 		return TurboMode::Standard;
 
-	// If none of the aboe apply, we should be good to stay on the current mode
+	// If none of the above apply, we should be good to stay on the current mode
 	return TurboMode::AutofireAbuse;
 }
 

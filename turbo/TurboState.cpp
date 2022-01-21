@@ -15,7 +15,7 @@ auto TurboState::getTurboMode(int input) -> TurboMode
 		return TurboMode::None;
 
 	// If in an event, use text mashing mode
-	if (gTSmode != 0)
+	if (gTSmode != 0 && !(g_GameFlags & 2)) // Unless the player still has control (e.g. Ballos phase transitions)
 		return TurboMode::TextAdvance;
 
 	// If no weapons, no point in turbo-ing
