@@ -62,8 +62,8 @@ void TextAdvanceTurbo::procInput()
 	case 1: // TSC processing
 		if (!(g_GameFlags & 2)) // Disable if the player still has control
 		{
-			input |= KEY_X;
-			input &= ~KEY_Z;
+			input |= KEY_Z;
+			input &= ~KEY_X;
 			// Prepare a down press at the end of the event, if the player is holding down
 			if (input & KEY_DOWN)
 			{
