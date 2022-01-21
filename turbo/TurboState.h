@@ -5,7 +5,7 @@ class TurboState
 	int savedInput;
 protected:
 	void setInput(int in) { savedInput = in; }
-	enum class TurboMode { None, Standard, TextAdvance, AutofireGun, AutofireAbuse, InfiniteSpur };
+	enum class TurboMode { None, Standard, TextAdvance, AutofireGun, AutofireCurly, AutofireAbuse, InfiniteSpur };
 	static TurboMode getTurboMode(int input);
 	static TurboState* getState(TurboMode mode, int input);
 public:

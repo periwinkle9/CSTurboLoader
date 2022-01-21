@@ -32,7 +32,9 @@ auto TurboState::getTurboMode(int input) -> TurboMode
 			return arms.code == 4 || (arms.code == 7 && arms.level > 1);
 		};
 		
-		if (isAutofireGun(curWeapon))
+		if (IsNpCharCode(320)) // Check for Curly
+			return TurboMode::AutofireCurly;
+		else if (isAutofireGun(curWeapon))
 			return TurboMode::AutofireGun;
 		else if (curWeapon.code == 13 && curWeapon.level > 1) // L2/3 Spur
 			return TurboMode::InfiniteSpur;
@@ -65,6 +67,8 @@ TurboState* TurboState::getState(TurboMode mode, int input)
 		return new TextAdvanceTurbo(input);
 	case TurboMode::AutofireGun:
 		return new MachineGunTurbo(input);
+	case TurboMode::AutofireCurly:
+		return new AutofireTurbo(input, true);
 	case TurboMode::AutofireAbuse:
 		return new AutofireAbuseTurbo(input);
 	case TurboMode::InfiniteSpur:

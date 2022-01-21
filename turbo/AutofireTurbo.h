@@ -7,8 +7,9 @@
 class AutofireTurbo : public TurboState
 {
 	int timer;
+	bool hasCurly;
 public:
-	AutofireTurbo(int in = 0) : TurboState(in) { timer = 0; }
+	AutofireTurbo(int in = 0, bool curly = false);
 	TurboState* procStateTransition(int input) override;
 	void procInput() override;
 

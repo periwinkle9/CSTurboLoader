@@ -1,11 +1,17 @@
 #include "AutofireTurbo.h"
 #include "../cs_addresses.h"
 
+AutofireTurbo::AutofireTurbo(int in, bool curly) : TurboState(in)
+{
+	timer = 0;
+	hasCurly = curly;
+}
+
 TurboState* AutofireTurbo::procStateTransition(int input)
 {
 	setInput(input);
 	TurboMode mode = getTurboMode(input);
-	if (mode == TurboMode::Standard)
+	if ((!hasCurly && mode == TurboMode::Standard) || (hasCurly && mode == TurboMode::AutofireCurly))
 		return this;
 	else
 		return getState(mode, input);
@@ -21,7 +27,7 @@ void AutofireTurbo::procInput()
 	}
 	else
 	{
-		if (timer == 0 || (timer == 2 && IsNpCharCode(320))) // Also push the button if you have Curly's Nemesis
+		if (timer == 0 || (hasCurly && timer == 2)) // Also push the button if you have Curly's Nemesis
 			input |= KEY_X;
 		else
 			input &= ~KEY_X;
