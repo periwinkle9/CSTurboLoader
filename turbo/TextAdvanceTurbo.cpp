@@ -34,13 +34,10 @@ void TextAdvanceTurbo::initActions()
 	if (gTSmode == 2 && (input & KEY_Z) && (input & KEY_X))
 		input &= ~(KEY_Z | KEY_X);
 	// If we're sitting at a Y/N prompt, release all of the relevent buttons
-	else if (gTSmode == 6)
-	{
-		if (gTSwait < 16)
-			return procInput(); // Just do the normal thing
-		else
-			input &= ~(KEY_Z | KEY_LEFT | KEY_RIGHT);
-	}
+	else if (gTSmode == 6 && gTSwait >= 16)
+		input &= ~(KEY_Z | KEY_LEFT | KEY_RIGHT);
+	else // If none of the above, just do the normal thing
+		return procInput();
 
 	setInput(input);
 }
