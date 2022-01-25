@@ -46,6 +46,8 @@ int TurboHandler::getNextInput(int input)
 #ifdef _DEBUG
 		std::printf("BUG DETECTED! Error: %s\nStopping turbo handling\n", e.what());
 		paused = true;
+#else
+		(void)e; // Shut up compiler warnings about an unused local variable
 #endif
 		state.reset();
 		newInput = input;

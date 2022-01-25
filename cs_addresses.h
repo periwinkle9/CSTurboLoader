@@ -48,9 +48,6 @@ auto IsNpCharCode = reinterpret_cast<int(*)(int)>(0x470490);
 
 auto CountArmsBullet = reinterpret_cast<int(*)(int)>(0x403C40);
 
-// TODO remove after implementing the actual hack
-auto PutNumber4 = reinterpret_cast<void(*)(int, int, int, int)>(0x40F380);
-
 auto PutFramePerSecound = reinterpret_cast<void(*)(void)>(0x412370);
 
 enum KeyBind

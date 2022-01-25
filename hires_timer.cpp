@@ -4,7 +4,7 @@
 // in case somebody wants to try running this on an ancient PC. :P
 
 // No WIN32_LEAN_AND_MEAN here, that disables the declaration of timeGetTime()
-typedef struct IUnknown IUnknown;
+//typedef struct IUnknown IUnknown; // Workaround for a compiler error with the Windows XP toolset/SDK
 #include <Windows.h>
 
 namespace {
