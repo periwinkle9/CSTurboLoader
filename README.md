@@ -5,7 +5,8 @@ It works similarly to existing "mod loader" projects, by spoofing a system DLL
 at runtime.
 
 ## Installation Instructions
-1. Download a release (link TBD)
+1. Download a release from the
+   [Releases](https://github.com/periwinkle9/CSTurboLoader/releases) page and unzip it.
 2. Rename the .dll file to "version.dll" (without quotes) and place it in the same
    folder as Doukutsu.exe.  
    **DO NOT OVERWRITE THE VERSION.DLL IN YOUR SYSTEM FOLDER!!!**
