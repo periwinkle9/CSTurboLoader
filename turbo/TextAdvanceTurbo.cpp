@@ -17,8 +17,9 @@ TurboState* TextAdvanceTurbo::procStateTransition(int input)
 		return this;
 	else
 	{
-		// Event ended, check if pushing down to enter door
-		if ((input & gKeyDown) && buttonPress == ButtonPressState::Press)
+		// Check if pushing down to enter door
+		if ((input & KEY_TURBO) && !(input & (gKeyItem | gKeyMap | KEY_ESCAPE)) &&
+			(input & gKeyDown) && buttonPress == ButtonPressState::Press)
 			return this;
 		else
 			return getState(mode, input);
