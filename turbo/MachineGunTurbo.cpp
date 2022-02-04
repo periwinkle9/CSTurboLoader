@@ -22,22 +22,22 @@ void MachineGunTurbo::procInput()
 		if (soft_rensha > 1)
 		{
 			timer = 0;
-			input &= ~KEY_X;
+			input &= ~gKeyShot;
 		}
 		else
-			input |= KEY_X;
+			input |= gKeyShot;
 		break;
 	case 1:
-		input &= ~KEY_X;
+		input &= ~gKeyShot;
 		break;
 	case 2:
-		input |= KEY_X;
+		input |= gKeyShot;
 		break;
 	case 3:
-		input |= KEY_X;
+		input |= gKeyShot;
 		break;
 	case 4:
-		input &= ~KEY_X;
+		input &= ~gKeyShot;
 		// Fallthrough to reset timer
 	default:
 		timer = 0;

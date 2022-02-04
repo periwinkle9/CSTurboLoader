@@ -23,14 +23,14 @@ void AutofireTurbo::procInput()
 	// Wait until you can shoot
 	if (timer == 0 && soft_rensha > 1)
 	{
-		input &= ~KEY_X;
+		input &= ~gKeyShot;
 	}
 	else
 	{
 		if (timer == 0 || (hasCurly && timer == 2)) // Also push the button if you have Curly's Nemesis
-			input |= KEY_X;
+			input |= gKeyShot;
 		else
-			input &= ~KEY_X;
+			input &= ~gKeyShot;
 		timer = (timer + 1) % 4;
 	}
 	

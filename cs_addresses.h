@@ -74,6 +74,21 @@ enum KeyBind
 	KEY_PLUS = 0x00100000
 };
 
+const int& gKeyJump = *reinterpret_cast<int*>(0x493610);
+const int& gKeyShot = *reinterpret_cast<int*>(0x493614);
+const int& gKeyArms = *reinterpret_cast<int*>(0x493618);
+const int& gKeyArmsRev = *reinterpret_cast<int*>(0x49361C);
+const int& gKeyItem = *reinterpret_cast<int*>(0x493620);
+const int& gKeyMap = *reinterpret_cast<int*>(0x493624);
+
+const int& gKeyOk = *reinterpret_cast<int*>(0x493628);
+const int& gKeyCancel = *reinterpret_cast<int*>(0x49362C);
+
+const int& gKeyLeft = *reinterpret_cast<int*>(0x493630);
+const int& gKeyUp = *reinterpret_cast<int*>(0x493634);
+const int& gKeyRight = *reinterpret_cast<int*>(0x493638);
+const int& gKeyDown = *reinterpret_cast<int*>(0x49363C);
+
 constexpr int KEY_TURBO = KEY_SHIFT;
 
 #ifdef DDRAW_STUFF

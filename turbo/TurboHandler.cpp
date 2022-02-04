@@ -64,16 +64,16 @@ int TurboHandler::getNextInput(int input)
 		// Ugly but serviceable
 		auto populateInputs = [](char* str, int in)
 		{
-			if (in & KEY_Z) str[0] = 'Z';
-			if (in & KEY_X) str[1] = 'X';
-			if (in & KEY_ARMSREV) str[2] = 'A';
-			if (in & KEY_ARMS) str[3] = 'S';
-			if (in & KEY_ITEM) str[4] = 'Q';
-			if (in & KEY_MAP) str[5] = 'W';
-			if (in & KEY_LEFT) str[6] = 'L';
-			if (in & KEY_UP) str[7] = 'U';
-			if (in & KEY_RIGHT) str[8] = 'R';
-			if (in & KEY_DOWN) str[9] = 'D';
+			if (in & gKeyJump) str[0] = 'Z';
+			if (in & gKeyShot) str[1] = 'X';
+			if (in & gKeyArmsRev) str[2] = 'A';
+			if (in & gKeyArms) str[3] = 'S';
+			if (in & gKeyItem) str[4] = 'Q';
+			if (in & gKeyMap) str[5] = 'W';
+			if (in & gKeyLeft) str[6] = 'L';
+			if (in & gKeyUp) str[7] = 'U';
+			if (in & gKeyRight) str[8] = 'R';
+			if (in & gKeyDown) str[9] = 'D';
 		};
 		char inputStr[11] = "          ";
 		populateInputs(inputStr, newInput);

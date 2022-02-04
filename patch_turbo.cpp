@@ -14,7 +14,8 @@ static TurboHandler turbo;
 static int getActualKeyPresses()
 {
 	BYTE keyboardState[256];
-	GetKeyboardState(keyboardState);
+	if (!GetKeyboardState(keyboardState))
+		return 0;
 
 	int realgKey = 0;
 	if (keyboardState[VK_ESCAPE] & 0x80)

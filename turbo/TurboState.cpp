@@ -11,7 +11,7 @@ auto TurboState::getTurboMode(int input) -> TurboMode
 {
 	// Dealing with opening the inventory/map/escape menu while turbo-ing is a pain,
 	// so let's just not deal with it at all
-	if (!(input & KEY_TURBO) || (input & (KEY_ITEM | KEY_MAP | KEY_ESCAPE)))
+	if (!(input & KEY_TURBO) || (input & (gKeyItem | gKeyMap | KEY_ESCAPE)))
 		return TurboMode::None;
 
 	// If in an event, use text mashing mode
@@ -24,7 +24,7 @@ auto TurboState::getTurboMode(int input) -> TurboMode
 		return TurboMode::None;
 
 	// If holding X, detect smart turbo mode
-	if (input & KEY_X)
+	if (input & gKeyShot)
 	{
 		auto isAutofireGun = [](const ARMSDATA& arms)
 		{

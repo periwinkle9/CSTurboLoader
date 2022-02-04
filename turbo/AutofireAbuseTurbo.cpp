@@ -56,7 +56,7 @@ auto AutofireAbuseTurbo::getMode() const -> TurboMode
 {
 	int input = getInput();
 	// Disable if player released the turbo button or pressed one of these problematic keys
-	if (!(input & KEY_TURBO) || (input & (KEY_ITEM | KEY_MAP | KEY_ESCAPE)))
+	if (!(input & KEY_TURBO) || (input & (gKeyItem | gKeyMap | KEY_ESCAPE)))
 		return TurboMode::None;
 
 	// If an event started and we no longer have player control, we should switch to text mashing mode
@@ -64,7 +64,7 @@ auto AutofireAbuseTurbo::getMode() const -> TurboMode
 		return TurboMode::TextAdvance;
 
 	// If released X, switch to normal autofire mode
-	if (!(input & KEY_X))
+	if (!(input & gKeyShot))
 		return TurboMode::Standard;
 
 	// Check that our weapons are still good
@@ -115,12 +115,12 @@ TurboState* AutofireAbuseTurbo::procStateTransition(int input)
 
 	int trg = input & ~prevInput;
 
-	if (trg & KEY_ARMS)
+	if (trg & gKeyArms)
 	{
 		swapTransition = SwapDirection::SwapRight;
 		status = OperMode::Stopping;
 	}
-	else if (trg & KEY_ARMSREV)
+	else if (trg & gKeyArmsRev)
 	{
 		swapTransition = SwapDirection::SwapLeft;
 		status = OperMode::Stopping;
@@ -147,7 +147,7 @@ void AutofireAbuseTurbo::procInput()
 			status = OperMode::Swapping;
 			// Add a 1f delay for safety, I guess?
 			int input = getInput();
-			input &= ~(KEY_ARMS | KEY_ARMSREV | KEY_X);
+			input &= ~(gKeyArms | gKeyArmsRev | gKeyShot);
 			setInput(input);
 		}
 		break;
@@ -162,7 +162,7 @@ void AutofireAbuseTurbo::procInput()
 void AutofireAbuseTurbo::autofireProc()
 {
 	int input = getInput();
-	input &= ~(KEY_ARMS | KEY_ARMSREV); // Prevent shenanigans
+	input &= ~(gKeyArms | gKeyArmsRev); // Prevent shenanigans
 
 	switch (timer++)
 	{
@@ -174,15 +174,15 @@ void AutofireAbuseTurbo::autofireProc()
 		// Wait until you can shoot
 		if (soft_rensha <= 1)
 		{
-			input |= KEY_X;
+			input |= gKeyShot;
 			if (swapDir == SwapDirection::SwapLeft)
-				input |= KEY_ARMSREV;
+				input |= gKeyArmsRev;
 			else if (swapDir == SwapDirection::SwapRight)
-				input |= KEY_ARMS;
+				input |= gKeyArms;
 		}
 		else
 		{
-			input &= ~KEY_X;
+			input &= ~gKeyShot;
 			timer = 0;
 		}
 		break;
@@ -190,21 +190,21 @@ void AutofireAbuseTurbo::autofireProc()
 		// Failsafe in case we didn't actually swap weapons last frame
 		if (gSelectedArms == mainWeaponNo)
 		{
-			input &= ~KEY_X;
+			input &= ~gKeyShot;
 			timer = 0;
 		}
 		else
-			input |= KEY_X;
+			input |= gKeyShot;
 		break;
 	case 2:
-		input &= ~KEY_X;
+		input &= ~gKeyShot;
 		break;
 	case 3:
-		input &= ~KEY_X;
+		input &= ~gKeyShot;
 		if (swapDir == SwapDirection::SwapLeft)
-			input |= KEY_ARMS;
+			input |= gKeyArms;
 		else if (swapDir == SwapDirection::SwapRight)
-			input |= KEY_ARMSREV;
+			input |= gKeyArmsRev;
 		// Fallthrough to reset timer
 	default:
 		timer = 0;
@@ -216,7 +216,7 @@ void AutofireAbuseTurbo::autofireProc()
 void AutofireAbuseTurbo::weaponSwapProc()
 {
 	int input = getInput();
-	input &= ~KEY_X; // Stop shooting
+	input &= ~gKeyShot; // Stop shooting
 
 	int targetWeapon = 0;
 	int swapButton = 0;
@@ -227,16 +227,15 @@ void AutofireAbuseTurbo::weaponSwapProc()
 		break;
 	case SwapDirection::SwapLeft:
 		targetWeapon = prevWeaponIdx();
-		swapButton = KEY_ARMSREV;
+		swapButton = gKeyArmsRev;
 		break;
 	case SwapDirection::SwapRight:
 		targetWeapon = nextWeaponIdx();
-		swapButton = KEY_ARMS;
+		swapButton = gKeyArms;
 	}
 
 	if (gSelectedArms == targetWeapon)
 	{
-		//input &= ~(KEY_ARMS | KEY_ARMSREV);
 		input |= swapButton; // Hold the button in case the player is also still holding it
 		status = OperMode::Stopped; // We're done
 	}
@@ -247,16 +246,16 @@ void AutofireAbuseTurbo::weaponSwapProc()
 		if (swapTransition == SwapDirection::SwapLeft)
 		{
 			if (timer++ % 2 == 0)
-				input |= KEY_ARMSREV;
+				input |= gKeyArmsRev;
 			else
-				input &= ~KEY_ARMSREV;
+				input &= ~gKeyArmsRev;
 		}
 		else if (swapTransition == SwapDirection::SwapRight)
 		{
 			if (timer++ % 2 == 0)
-				input |= KEY_ARMS;
+				input |= gKeyArms;
 			else
-				input &= ~KEY_ARMS;
+				input &= ~gKeyArms;
 		}
 		else
 			throw std::logic_error("Wrong weapon selected in weapon swap mode?!");

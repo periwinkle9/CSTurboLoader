@@ -18,7 +18,7 @@ TurboState* TextAdvanceTurbo::procStateTransition(int input)
 	else
 	{
 		// Event ended, check if pushing down to enter door
-		if ((input & KEY_DOWN) && buttonPress == ButtonPressState::Press)
+		if ((input & gKeyDown) && buttonPress == ButtonPressState::Press)
 			return this;
 		else
 			return getState(mode, input);
@@ -31,11 +31,11 @@ void TextAdvanceTurbo::initActions()
 	init = false;
 
 	// If we started in a <NOD and the player is already holding both Z and X, release them
-	if (gTSmode == 2 && (input & KEY_Z) && (input & KEY_X))
-		input &= ~(KEY_Z | KEY_X);
-	// If we're sitting at a Y/N prompt, release all of the relevent buttons
+	if (gTSmode == 2 && (input & gKeyOk) && (input & gKeyCancel))
+		input &= ~(gKeyOk | gKeyCancel);
+	// If we're sitting at a Y/N prompt, release all of the relevant buttons
 	else if (gTSmode == 6 && gTSwait >= 16)
-		input &= ~(KEY_Z | KEY_LEFT | KEY_RIGHT);
+		input &= ~(gKeyOk | gKeyLeft | gKeyRight);
 	else // If none of the above, just do the normal thing
 		return procInput();
 
@@ -55,46 +55,46 @@ void TextAdvanceTurbo::procInput()
 		if (buttonPress != ButtonPressState::Press)
 			throw std::logic_error("Event ended but still in text mashing mode?!");
 
-		input = KEY_DOWN; // Can only be holding down to enter doors
+		input = gKeyDown; // Can only be holding down to enter doors
 		buttonPress = ButtonPressState::AlreadyPressed;
 		
 		break;
 	case 1: // TSC processing
 		if (!(g_GameFlags & 2)) // Disable if the player still has control
 		{
-			input |= KEY_Z;
-			input &= ~KEY_X;
+			input |= gKeyOk;
+			input &= ~gKeyCancel;
 			// Prepare a down press at the end of the event, if the player is holding down
-			if (input & KEY_DOWN)
+			if (input & gKeyDown)
 			{
 				buttonPress = ButtonPressState::Press;
-				input &= ~KEY_DOWN;
+				input &= ~gKeyDown;
 			}
 			else
 				buttonPress = ButtonPressState::NoPress;
 		}
 		break;
 	case 2: // NOD
-		input |= (KEY_Z | KEY_X);
+		input |= (gKeyOk | gKeyCancel);
 		break;
 	case 6: // YNJ
-		if (input & (KEY_LEFT | KEY_RIGHT)) // Auto-select option if the player is holding left or right
+		if (input & (gKeyLeft | gKeyRight)) // Auto-select option if the player is holding left or right
 		{
 			if (gTSwait < 16)
 			{
-				input &= ~(KEY_Z | KEY_RIGHT);
-				buttonPress = (input & KEY_LEFT) ? ButtonPressState::Press : ButtonPressState::NoPress;
+				input &= ~(gKeyOk | gKeyRight);
+				buttonPress = (input & gKeyLeft) ? ButtonPressState::Press : ButtonPressState::NoPress;
 			}
-			else if (input & KEY_LEFT)
+			else if (input & gKeyLeft)
 			{
 				if (buttonPress == ButtonPressState::NoPress)
 				{
-					input &= ~KEY_Z;
+					input &= ~gKeyOk;
 					buttonPress = ButtonPressState::Press;
 				}
 				else if (buttonPress == ButtonPressState::Press)
 				{
-					input |= KEY_Z;
+					input |= gKeyOk;
 					buttonPress = ButtonPressState::AlreadyPressed;
 				}
 			}
@@ -102,13 +102,13 @@ void TextAdvanceTurbo::procInput()
 			{
 				if (buttonPress == ButtonPressState::NoPress) // Cursor over to "No"
 				{
-					input |= KEY_RIGHT;
-					input &= ~KEY_Z;
+					input |= gKeyRight;
+					input &= ~gKeyOk;
 					buttonPress = ButtonPressState::Press;
 				}
 				else if (buttonPress == ButtonPressState::Press) // Then press OK on the next frame
 				{
-					input |= KEY_Z;
+					input |= gKeyOk;
 					buttonPress = ButtonPressState::AlreadyPressed;
 				}
 			}

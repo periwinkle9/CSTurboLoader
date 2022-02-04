@@ -30,22 +30,22 @@ void InfiniteSpurTurbo::procInput()
 	switch (timer++)
 	{
 	case 0:
-		input |= KEY_X;
+		input |= gKeyShot;
 		if (CountArmsBullet(13) > 0 || CountArmsBullet(14) > 0)
 			timer = 0;
 		else
-			input |= KEY_ITEM;
+			input |= gKeyItem;
 		break;
 	case 1:
 		// Prevent accidental menuing
-		input &= ~(KEY_ITEM | KEY_LEFT | KEY_RIGHT | KEY_UP | KEY_DOWN | KEY_Z | KEY_X);
+		input &= ~(gKeyItem | gKeyLeft | gKeyRight | gKeyUp | gKeyDown | gKeyOk | gKeyCancel);
 		break;
 	case 2:
-		input |= KEY_ITEM;
-		input &= ~(KEY_X | KEY_LEFT | KEY_RIGHT);
+		input |= gKeyItem;
+		input &= ~(gKeyShot | gKeyLeft | gKeyRight);
 		break;
 	case 3:
-		input |= KEY_X;
+		input |= gKeyShot;
 		// Fallthrough to reset timer
 	default:
 		timer = 0;
