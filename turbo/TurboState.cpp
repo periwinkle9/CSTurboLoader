@@ -41,7 +41,7 @@ auto TurboState::getTurboMode(int input) -> TurboMode
 		else if (gArmsData[1].code != 0) // Need at least 2 weapons to do this
 		{
 			// Check adjacent weapons for MG or Bubbler
-			int weaponCount = 0;
+			int weaponCount = 2;
 			for (; weaponCount < 8 && gArmsData[weaponCount].code != 0; ++weaponCount) {}
 			
 			int adjLeftIdx = (gSelectedArms > 0 ? gSelectedArms - 1 : weaponCount - 1);
