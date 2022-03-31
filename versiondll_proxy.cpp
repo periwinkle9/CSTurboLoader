@@ -87,4 +87,60 @@ Real_VerQueryValueA(
     return addr(pBlock, lpSubBlock, lplpBuffer, puLen);
 }
 
+// Apparently these are needed too???
+#pragma comment(linker, "/export:GetFileVersionInfoSizeW=_Real_GetFileVersionInfoSizeW@8")
+DWORD
+APIENTRY
+Real_GetFileVersionInfoSizeW(
+    _In_        LPCWSTR lptstrFilename, /* Filename of version stamped file */
+    _Out_opt_ LPDWORD lpdwHandle       /* Information for use by GetFileVersionInfo */
+)
+{
+    using Func = decltype(&Real_GetFileVersionInfoSizeW);
+    static Func addr = nullptr;
+
+    if (!addr)
+        addr = (Func)GetProcAddress(getRealVersionDLL(), "GetFileVersionInfoSizeW");
+
+    return addr(lptstrFilename, lpdwHandle);
+}
+
+#pragma comment(linker, "/export:GetFileVersionInfoW=_Real_GetFileVersionInfoW@16")
+BOOL
+APIENTRY
+Real_GetFileVersionInfoW(
+    _In_                LPCSTR lptstrFilename,
+    _Reserved_          DWORD dwHandle,
+    _In_                DWORD dwLen,
+    _Out_writes_bytes_(dwLen) LPVOID lpData
+)
+{
+    using Func = decltype(&Real_GetFileVersionInfoW);
+    static Func addr = nullptr;
+
+    if (!addr)
+        addr = (Func)GetProcAddress(getRealVersionDLL(), "GetFileVersionInfoW");
+
+    return addr(lptstrFilename, dwHandle, dwLen, lpData);
+}
+
+#pragma comment(linker, "/export:VerQueryValueW=_Real_VerQueryValueW@16")
+BOOL
+APIENTRY
+Real_VerQueryValueW(
+    _In_ LPCVOID pBlock,
+    _In_ LPCSTR lpSubBlock,
+    _Outptr_result_buffer_(_Inexpressible_("buffer can be PWSTR or DWORD*")) LPVOID* lplpBuffer,
+    _Out_ PUINT puLen
+)
+{
+    using Func = decltype(&Real_VerQueryValueW);
+    static Func addr = nullptr;
+
+    if (!addr)
+        addr = (Func)GetProcAddress(getRealVersionDLL(), "VerQueryValueW");
+
+    return addr(pBlock, lpSubBlock, lplpBuffer, puLen);
+}
+
 }
