@@ -62,65 +62,65 @@ static int getActualKeyPresses()
 
 void putTurboMessage()
 {
-    // Gonna do a similar thing to what ReadyMapName() does
-    const char* text = "<Turbo engaged>";
-    constexpr int x = 16;
-    constexpr int y = 4;
-    PutText(x, y + 1, text, RGB(0x11, 0x00, 0x22));
-    PutText(x, y, text, RGB(0xFF, 0xFF, 0xFE));
+	// Gonna do a similar thing to what ReadyMapName() does
+	const char* text = "<Turbo engaged>";
+	constexpr int x = 16;
+	constexpr int y = 4;
+	PutText(x, y + 1, text, RGB(0x11, 0x00, 0x22));
+	PutText(x, y, text, RGB(0xFF, 0xFF, 0xFE));
 }
 
 // Mostly vanilla, except where indicated
 BOOL Flip_SystemTask(HWND hWnd)
 {
-    static DWORD timePrev;
-    static DWORD timeNow;
+	static DWORD timePrev;
+	static DWORD timeNow;
 
-    while (TRUE)
-    {
-        if (!SystemTask())
-            return FALSE;
+	while (TRUE)
+	{
+		if (!SystemTask())
+			return FALSE;
 
-        // Use our tick counter instead of GetTickCount()
-        timeNow = GetTicks();
+		// Use our tick counter instead of GetTickCount()
+		timeNow = GetTicks();
 
-        if (timeNow >= timePrev + 20)
-            break;
+		if (timeNow >= timePrev + 20)
+			break;
 
-        Sleep(1);
-    }
+		Sleep(1);
+	}
 
-    // Run turbo handler
-    gKey = turbo.getNextInput(getActualKeyPresses());
-    if (turbo.isTurbo())
-        putTurboMessage();
+	// Run turbo handler
+	gKey = turbo.getNextInput(getActualKeyPresses());
+	if (turbo.isTurbo())
+		putTurboMessage();
 
-    if (timeNow >= timePrev + 100)
-        timePrev = timeNow;
-    else
-        timePrev += 20;
+	if (timeNow >= timePrev + 100)
+		timePrev = timeNow;
+	else
+		timePrev += 20;
 
-    static RECT dst_rect;
-    GetWindowRect(hWnd, &dst_rect);
-    dst_rect.left += client_x;
-    dst_rect.top += client_y;
-    dst_rect.right = dst_rect.left + scaled_window_width;
-    dst_rect.bottom = dst_rect.top + scaled_window_height;
+	static RECT dst_rect;
+	GetWindowRect(hWnd, &dst_rect);
+	dst_rect.left += client_x;
+	dst_rect.top += client_y;
+	dst_rect.right = dst_rect.left + scaled_window_width;
+	dst_rect.bottom = dst_rect.top + scaled_window_height;
 
-    frontbuffer->Blt(&dst_rect, backbuffer, &backbuffer_rect, DDBLT_WAIT, NULL);
+	frontbuffer->Blt(&dst_rect, backbuffer, &backbuffer_rect, DDBLT_WAIT, NULL);
 
-    if (RestoreSurfaces())
-    {
-        RestoreStripper();
-        RestoreMapName();
-        RestoreTextScript();
-    }
+	if (RestoreSurfaces())
+	{
+		RestoreStripper();
+		RestoreMapName();
+		RestoreTextScript();
+	}
 
-    return TRUE;
+	return TRUE;
 }
 
 void applyTurboPatch()
 {
-    // Replace vanilla Flip_SystemTask with ours
-    hookFunction(reinterpret_cast<void*>(0x40B340), reinterpret_cast<void*>(Flip_SystemTask));
+	// Replace vanilla Flip_SystemTask with ours
+	hookFunction(reinterpret_cast<void*>(0x40B340), reinterpret_cast<void*>(Flip_SystemTask));
 }
