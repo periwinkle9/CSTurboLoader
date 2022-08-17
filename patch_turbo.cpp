@@ -60,6 +60,16 @@ static int getActualKeyPresses()
 	return realgKey;
 }
 
+void putTurboMessage()
+{
+    // Gonna do a similar thing to what ReadyMapName() does
+    const char* text = "<Turbo engaged>";
+    constexpr int x = 16;
+    constexpr int y = 4;
+    PutText(x, y + 1, text, RGB(0x11, 0x00, 0x22));
+    PutText(x, y, text, RGB(0xFF, 0xFF, 0xFE));
+}
+
 // Mostly vanilla, except where indicated
 BOOL Flip_SystemTask(HWND hWnd)
 {
@@ -82,6 +92,8 @@ BOOL Flip_SystemTask(HWND hWnd)
 
     // Run turbo handler
     gKey = turbo.getNextInput(getActualKeyPresses());
+    if (turbo.isTurbo())
+        putTurboMessage();
 
     if (timeNow >= timePrev + 100)
         timePrev = timeNow;

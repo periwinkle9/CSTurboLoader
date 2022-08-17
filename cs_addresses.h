@@ -37,6 +37,7 @@ const signed char& gTSmode = *reinterpret_cast<signed char*>(0x4A5ADC);
 const int& gTSwait = *reinterpret_cast<int*>(0x4A5AFC);
 
 auto SystemTask = reinterpret_cast<int(*)(void)>(0x413570);
+auto PutText = reinterpret_cast<void(*)(int, int, const char*, unsigned long)>(0x40CE00);
 auto RestoreSurfaces = reinterpret_cast<int(*)(void)>(0x40CB60);
 auto RestoreStripper = reinterpret_cast<void(*)(void)>(0x40D240);
 auto RestoreMapName = reinterpret_cast<void(*)(void)>(0x414330);

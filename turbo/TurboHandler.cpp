@@ -88,3 +88,8 @@ int TurboHandler::getNextInput(int input)
 
 	return newInput;
 }
+
+bool TurboHandler::isTurbo() const
+{
+	return state->isTurbo();
+}

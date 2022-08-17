@@ -17,6 +17,8 @@ public:
 
 	int getInput() const { return savedInput; }
 
+	virtual bool isTurbo() const { return true; } // Default to true
+
 #ifdef _DEBUG
 	virtual const char* name() const = 0;
 #endif

@@ -18,4 +18,5 @@ public:
 	TurboHandler& operator=(TurboHandler&&) = default;
 
 	int getNextInput(int input);
+	bool isTurbo() const;
 };
